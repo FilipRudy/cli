@@ -16,6 +16,7 @@ func GetToken(url, requestToken, audience string) (string, clierror.Error) {
 	if audience != "" {
 		q := request.URL.Query()
 		q.Add("audience", audience)
+		q.Add("access_token_lifetime", "30s")
 		request.URL.RawQuery = q.Encode()
 	}
 

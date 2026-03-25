@@ -1,0 +1,39 @@
+name: "Test of app-push"
+on:
+  push:
+    branches:
+      - oidc-test
+
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: build kyma binary
+        run: make build
+      - name: "get kubeconfig"
+        id: oidc
+        run: |
+         kyma alpha kubeconfig generate --id-token-auto-refresh=true --audience "filip" --server "${{ API_SERVER_URL }}" --certificate-authority-data "${{ CA_CRT }}" --output kubeconfig.yaml
+         cat kubeconfig.yaml
+         echo 'kubeconfig<<EOF'  >> $GITHUB_OUTPUT
+         cat "${kubeconfig_path}" >> $GITHUB_OUTPUT
+         echo 'EOF' >> $GITHUB_OUTPUT
+          
+         kubeconfig64="$(cat "${kubeconfig_path}" | base64 -w 0)"
+         echo "kubeconfig_base=${kubeconfig64}" >> $GITHUB_OUTPUT
+        env:
+          API_SERVER_URL: "${{ secrets.API_SERVER_URL }}"
+          CA_CRT: "${{ secrets.CA_CERT }}"
+      - name: "test"
+        id: name
+        shell: bash
+        run: |
+          kubectl get pods -n fr
+          sleep 40
+          kubectl get pods -n fr
+        env:
+          KUBECONFIG_RAW: "${{ steps.oidc.outputs.kubeconfig }}"
