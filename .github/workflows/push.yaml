@@ -12,12 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-go
       - name: build kyma binary
         run: make build
       - name: "get kubeconfig"
         id: oidc
         run: |
-         kyma alpha kubeconfig generate --id-token-auto-refresh=true --audience "filip" --server "${API_SERVER_URL}" --certificate-authority-data "${CA_CRT}" --output kubeconfig.yaml
+         ./bin/kyma alpha kubeconfig generate --id-token-auto-refresh=true --audience "filip" --server "${API_SERVER_URL}" --certificate-authority-data "${CA_CRT}" --output kubeconfig.yaml
          cat kubeconfig.yaml
          echo 'kubeconfig<<EOF'  >> $GITHUB_OUTPUT
          cat "${kubeconfig_path}" >> $GITHUB_OUTPUT
