@@ -36,4 +36,4 @@ jobs:
           sleep 40
           kubectl get pods -n fr
         env:
-          KUBECONFIG_RAW: "${{ steps.oidc.outputs.kubeconfig }}"
+          KUBECONFIG: "${{ steps.oidc.outputs.kubeconfig }}"
