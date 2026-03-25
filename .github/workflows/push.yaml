@@ -18,7 +18,7 @@ jobs:
       - name: "get kubeconfig"
         id: oidc
         run: |
-         ./bin/kyma alpha kubeconfig generate --id-token-auto-refresh=true --audience "filip" --server "${API_SERVER_URL}" --certificate-authority-data "${CA_CRT}" --output kubeconfig.yaml
+         ./bin/kyma alpha kubeconfig generate --audience "filip" --server "${API_SERVER_URL}" --certificate-authority-data "${CA_CRT}" --output kubeconfig.yaml
          echo 'kubeconfig<<EOF'  >> $GITHUB_OUTPUT
          cat "kubeconfig.yaml" >> $GITHUB_OUTPUT
          echo 'EOF' >> $GITHUB_OUTPUT
