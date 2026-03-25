@@ -32,7 +32,7 @@ jobs:
         id: name
         shell: bash
         run: |
-          echo KUBECONFIG="${PWD}/kubeconfig.yaml"
+          export KUBECONFIG="${PWD}/kubeconfig.yaml"
           kubectl get pods -n fr
           sleep 40
           kubectl get pods -n fr
