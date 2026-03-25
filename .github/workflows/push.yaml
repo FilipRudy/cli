@@ -32,8 +32,9 @@ jobs:
         id: name
         shell: bash
         run: |
+          echo KUBECONFIG="${PWD}/kubeconfig.yaml"
           kubectl get pods -n fr
           sleep 40
           kubectl get pods -n fr
         env:
-          KUBECONFIG: "${{ steps.oidc.outputs.kubeconfig }}"
+          KUBECONFIG_RAW: "${{ steps.oidc.outputs.kubeconfig }}"
