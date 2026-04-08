@@ -33,13 +33,13 @@ jobs:
         shell: bash
         run: |
           export KUBECONFIG="${PWD}/kubeconfig.yaml"
-          kubectl get pods -A
+          kubectl get pods -n fr
           sleep 360
-          if kubectl get pods -A; then
+          if kubectl get pods -n fr; then
             echo "SUCCESS: token is still valid after 6 minutes"
           else
             echo "FAILURE: kubectl failed - token may be expired"
-            kubectl get pods -A 2>&1 || true
+            kubectl get pods -n fr 2>&1 || true
             exit 1
           fi
         env:
